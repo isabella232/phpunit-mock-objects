@@ -137,7 +137,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
 
         try {
             if ( $this->parametersMatcher !== NULL &&
-                !$this->parametersMatcher->matches($invocation)) {
+                $this->parametersMatcher->matches($invocation)) {
                 $this->parametersMatcher->verify();
             }
         } catch (PHPUnit_Framework_ExpectationFailedException $e) {
@@ -208,6 +208,9 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
 
         try {
             if (!$this->methodNameMatcher->matches($invocation)) {
+                return FALSE;
+            }
+            if ($this->parametersMatcher !== NULL && !$this->parametersMatcher->matches($invocation)) {
                 return FALSE;
             }
         } catch (PHPUnit_Framework_ExpectationFailedException $e) {
